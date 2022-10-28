@@ -18,6 +18,7 @@
 #include "position.h"   // for POSITION
 #include <map>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 /*************************************************************************
@@ -191,9 +192,6 @@ map<double, double> altGravity{
     {25000,9.730}
 };
 
-double computeAirResistance() {
-    return 0;
-}
 
 double linearInterpolation(double d0, double r0, double d1, double r1, double d) {
     // (r - r0)/(d - d0) = (r1 - r0)/(d1 - d0)
@@ -370,10 +368,48 @@ double computeAreaCircle(double radius) {
     return (radius * radius * 3.14159);
 }
 
+double computeDragForce(double altitude, double v) {
+    double mach = computeSpeedOfSound(altitude);
+
+    double c = computeDragCoefficient(mach);
+    double p = computeAirDensity(altitude);
+    double a = computeAreaCircle(154.89 / 2000);
+    return 0.5 * c * p * (v * v) * a;
+}
+
 double computeAcceleration(double force, double mass) {
     return force / mass;
 }
 
+double getAcceleration(double altitude, double v) {
+    double dragForce = computeDragForce(altitude, v);
+
+    return computeAcceleration(dragForce, 46.7);
+}
+
+double computeDyComponent(double v, double angle) {
+    return v * cos(angle);
+}
+
+double computeDxComponent(double v, double angle) {
+    return v * sin(angle);
+}
+
+double angleFromComponents(double dx, double dy) {
+    return atan2(dy, dx);
+}
+
+double getTotalComponent(double dx, double dy) {
+    return sqrt((dx * dx) + (dy * dy));
+}
+
+double computeVComponent(double v, double a, double t) {
+    return v + a * t;
+}
+
+double computePosition(double pos, double v, double a, double t) {
+    return pos + (v * t) + (0.5 * a * t * t);
+}
 /*********************************
  * Initialize the simulation and set it in motion
  *********************************/

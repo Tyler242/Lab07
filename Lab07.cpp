@@ -407,18 +407,15 @@ int main(int argc, char** argv)
     cout << "What is the angle of the howitzer where 0 is up? ";
     cin >> angle;
     cout << computeSpeedOfSound(angle) << endl;
-    //double angle;
-    //cout << "What is the angle of the howitzer where 0 is up? ";
-    //cin >> angle;
-    //cout << computeAirDensity(angle) << endl;
 
-    double mach = -3;
-    while (true) {
-        cout << "Enter mach: ";
-        cin >> mach;
-        double drag = computeDragCoefficient(mach);
-        cout << "Drag: " << drag << endl;
-    }
+
+    //double mach = -3;
+    //while (true) {
+    //    cout << "Enter mach: ";
+    //    cin >> mach;
+    //    double drag = computeDragCoefficient(mach);
+    //    cout << "Drag: " << drag << endl;
+    //}
 
 
    return 0;

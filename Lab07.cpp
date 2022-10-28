@@ -156,6 +156,40 @@ map<double, double> airDensityMap{
     {70000, 0.0000828},
     {80000, 0.0000185}
 };
+map<double, double> altSpeedSoundMap{
+    {0,340},
+    {1000,336},
+    {2000,332},
+    {3000,328},
+    {4000,324},
+    {5000,320},
+    {6000,316},
+    {7000,312},
+    {8000,308},
+    {9000,303},
+    {10000,299},
+    {15000,295},
+    {20000,295},
+    {25000,295},
+    {30000,305},
+    {40000,324},
+};
+map<double, double> altGravity{
+    {0,9.807},
+    {1000,9.804},
+    {2000,9.801},
+    {3000,9.797},
+    {4000,9.794},
+    {5000,9.791},
+    {6000,9.788},
+    {7000,9.785},
+    {8000,9.782},
+    {9000,9.779},
+    {10000,9.776},
+    {15000,9.761},
+    {20000,9.745},
+    {25000,9.730}
+};
 
 double computeAirResistance() {
     return 0;
@@ -167,49 +201,61 @@ double linearInterpolation(double d0, double r0, double d1, double r1, double d)
     // r = ((r1 - r0)*(d - d0))/(d1 - d0) + r0
     return ((r1 - r0)*(d - d0))/(d1 - d0) + r0;
 }
+
+void findUpperLowerBound(double value, double& upper, double& lower, double max, double min) {
+    if (value < 1000 && value >= min) {
+        upper = 1000;
+        lower = min;
+    }
+    else if (value >= 1000 && value < 10000) {
+        int intermediateVal = value / 1000;
+        lower = intermediateVal * 1000;
+        upper = lower + 1000;
+    }
+    else if (value >= 10000 && value < 30000) {
+        if (value >= 10000 && value < 15000) {
+            lower = 10000;
+            upper = 15000;
+        }
+        else if (value >= 15000 && value < 20000) {
+            lower = 15000;
+            upper = 20000;
+        }
+        else if (value >= 20000 && value < 25000) {
+            lower = 20000;
+            upper = 25000;
+        }
+        else {
+            if (max > 25000) {
+                lower = 25000;
+                upper = 30000;
+            }
+            else {
+                lower = 20000;
+                upper = 25000;
+            }
+        }
+    }
+    else if (value >= 30000 && value <= max) {
+        if (value == max) {
+            lower = max - (max == 25000 ? 5000 : 10000);
+            upper = max;
+        }
+        else {
+            int intermediateVal = value / 10000;
+            lower = intermediateVal * 10000;
+            upper = lower + 10000;
+        }
+    }
+}
+
 double computeAirDensity(double altitude) {
     assert(!(altitude > 80000));
     double upperAlt;
     double lowerAlt;
 
-    if (altitude < 1000 && altitude > 0) {
-        upperAlt = 1000;
-        lowerAlt = 0;
-    }
-    else if (altitude >= 1000 && altitude < 10000) {
-        int intermediateVal = altitude / 1000;
-        lowerAlt = intermediateVal * 1000;
-        upperAlt = lowerAlt + 1000;
-    }
-    else if (altitude >= 10000 && altitude < 30000) {
-        if (altitude >= 10000 && altitude < 15000) {
-            lowerAlt = 10000;
-            upperAlt = 15000;
-        }
-        else if (altitude >= 15000 && altitude < 20000) {
-            lowerAlt = 15000;
-            upperAlt = 20000;
-        }
-        else if (altitude >= 20000 && altitude < 25000) {
-            lowerAlt = 20000;
-            upperAlt = 25000;
-        }
-        else {
-            lowerAlt = 25000;
-            upperAlt = 30000;
-        }
-    }
-    else if (altitude >= 30000 && altitude <= 80000) {
-        if (altitude == 80000) {
-            lowerAlt = 70000;
-            upperAlt = 80000;
-        }
-        else {
-            int intermediateVal = altitude / 10000;
-            lowerAlt = intermediateVal * 10000;
-            upperAlt = lowerAlt + 10000;
-        }
-    }
+    findUpperLowerBound(altitude, upperAlt, lowerAlt, 80000, 0);
+
     cout << lowerAlt << endl;
     cout << upperAlt << endl;
 
@@ -225,9 +271,48 @@ double computeAirDensity(double altitude) {
     );
 }
 
+double computeSpeedOfSound(double altitude) {
+    assert(altitude <= 40000);
+    double upperAlt;
+    double lowerAlt;
 
-double convertMeterSecToMach(double speed, double altitude) {
-    return 0;
+    findUpperLowerBound(altitude, upperAlt, lowerAlt, 40000, 0);
+
+    cout << lowerAlt << endl;
+    cout << upperAlt << endl;
+    
+    assert(upperAlt <= 40000 && upperAlt >= 1000);
+    assert(lowerAlt <= 30000 && lowerAlt >= 0);
+
+    return linearInterpolation(
+        lowerAlt,
+        altSpeedSoundMap[lowerAlt],
+        upperAlt,
+        altSpeedSoundMap[upperAlt],
+        altitude
+        );
+}
+
+double computeGravity(double altitude) {
+    assert(altitude <= 25000);
+    double upperAlt;
+    double lowerAlt;
+
+    findUpperLowerBound(altitude, upperAlt, lowerAlt, 25000, 0);
+
+    cout << lowerAlt << endl;
+    cout << upperAlt << endl;
+    
+    assert(upperAlt <= 25000 && upperAlt >= 1000);
+    assert(lowerAlt <= 20000 && lowerAlt >= 0);
+
+    return linearInterpolation(
+        lowerAlt,
+        altGravity[lowerAlt],
+        upperAlt,
+        altGravity[upperAlt],
+        altitude
+    );
 }
 
 double computeDragCoefficient() {
@@ -274,7 +359,7 @@ int main(int argc, char** argv)
     double angle;
     cout << "What is the angle of the howitzer where 0 is up? ";
     cin >> angle;
-    cout << computeAirDensity(angle) << endl;
+    cout << computeSpeedOfSound(angle) << endl;
 
 
    return 0;

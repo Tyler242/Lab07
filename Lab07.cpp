@@ -21,6 +21,8 @@
 #include <cmath>
 using namespace std;
 
+#define PI       3.14159265358979323846
+
 /*************************************************************************
  * Demo
  * Test structure to capture the LM that will move around the screen
@@ -247,6 +249,10 @@ void findUpperLowerBound(double value, double& upper, double& lower, double max,
     }
 }
 
+/********************************************************
+ * COMPUTE AIR DENSITY
+ * Computes the air density based on an altitude
+ ********************************************************/
 double computeAirDensity(double altitude) {
     assert(!(altitude > 80000));
     double upperAlt;
@@ -269,6 +275,10 @@ double computeAirDensity(double altitude) {
     );
 }
 
+/********************************************************
+ * COMPUTE SPEED OF SOUND
+ * Computes the speed of sound based on an altitude
+ ********************************************************/
 double computeSpeedOfSound(double altitude) {
     assert(altitude <= 40000);
     double upperAlt;
@@ -291,6 +301,10 @@ double computeSpeedOfSound(double altitude) {
         );
 }
 
+/********************************************************
+ * COMPUTE GRAVITY
+ * Computes the gravity based on an altitude
+ ********************************************************/
 double computeGravity(double altitude) {
     assert(altitude <= 25000);
     double upperAlt;
@@ -311,6 +325,17 @@ double computeGravity(double altitude) {
         altGravity[upperAlt],
         altitude
     );
+}
+
+/********************************************************
+ * DEGREES TO RADIANS
+ * Computes the drag coefficient based off of mach
+ ********************************************************/
+double degreesToRadians(const double degrees) {
+    double radians;
+    radians = (degrees / 360) * (2 * PI);
+
+    return radians;
 }
 
 
@@ -439,19 +464,24 @@ int main(int argc, char** argv)
    //// set everything into action
    //ui.run(callBack, &demo);
     
+    // Get angle from user
     double angle;
     cout << "What is the angle of the howitzer where 0 is up? ";
     cin >> angle;
+
     cout << computeSpeedOfSound(angle) << endl;
 
+    // Init variables
+    Position position = Position();
+    double distance = -1;
+    double hangTime = 0;
 
-    //double mach = -3;
-    //while (true) {
-    //    cout << "Enter mach: ";
-    //    cin >> mach;
-    //    double drag = computeDragCoefficient(mach);
-    //    cout << "Drag: " << drag << endl;
-    //}
+
+    while (position.getMetersY() > 0) {
+        hangTime += 0.1;
+    }
+
+    cout << "Distance:      " << distance << "m       Hang Time:      " << hangTime << endl;
 
 
    return 0;

@@ -315,8 +315,55 @@ double computeGravity(double altitude) {
     );
 }
 
-double computeDragCoefficient() {
-    return 0;
+
+/********************************************************
+ * COMPUTE DRAG COEFFICIENT
+ * Computes the drag coefficient based off of mach
+ ********************************************************/
+double computeDragCoefficient(const double mach) {
+    assert(!(mach > 5.00 && mach < 0.300));
+    double dragCoefficient = -1;
+
+    // mach, dragCoefficient
+    map<double, double> dragCoefficientMap{
+        {0.300, 0.1629},
+        {0.500, 0.1659},
+        {0.700, 0.2031},
+        {0.890, 0.2597},
+        {0.920, 0.3010},
+        {0.960, 0.3287},
+        {0.980, 0.4002},
+        {1.000, 0.4258},
+        {1.020, 0.4335},
+        {1.060, 0.4483},
+        {1.240, 0.4064},
+        {1.530, 0.3663},
+        {1.990, 0.2897},
+        {2.870, 0.2297},
+        {2.890, 0.2306},
+        {5.000, 0.2656},
+    };
+
+    // Loop through machs in dragCoefficientMap until dragCoefficient is set
+    for (auto it = dragCoefficientMap.begin(); it != dragCoefficientMap.end() && dragCoefficient == -1; ++it)
+    {
+        if (mach == it->first) {
+            dragCoefficient = it->second;
+        }
+        else if (mach < it->first) {
+            double d1 = it->first;
+            double r1 = it->second;
+
+            // last element
+            --it;
+            double d0 = it->first;
+            double r0 = it->second;
+
+            dragCoefficient = linearInterpolation(d0, r0, d1, r1, mach);
+        }
+    };
+
+    return dragCoefficient;
 }
 
 double computeAreaCircle(double radius) {
@@ -360,6 +407,18 @@ int main(int argc, char** argv)
     cout << "What is the angle of the howitzer where 0 is up? ";
     cin >> angle;
     cout << computeSpeedOfSound(angle) << endl;
+    //double angle;
+    //cout << "What is the angle of the howitzer where 0 is up? ";
+    //cin >> angle;
+    //cout << computeAirDensity(angle) << endl;
+
+    double mach = -3;
+    while (true) {
+        cout << "Enter mach: ";
+        cin >> mach;
+        double drag = computeDragCoefficient(mach);
+        cout << "Drag: " << drag << endl;
+    }
 
 
    return 0;

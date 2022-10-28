@@ -156,28 +156,6 @@ map<double, double> airDensityMap{
     {70000, 0.0000828},
     {80000, 0.0000185}
 };
-vector<double> airDensityVector{
-    0,
-    1000,
-    2000,
-    3000,
-    4000,
-    5000,
-    6000,
-    7000,
-    8000,
-    9000,
-    10000,
-    15000,
-    20000,
-    25000,
-    30000,
-    40000,
-    50000,
-    60000,
-    70000,
-    80000
-};
 
 double computeAirResistance() {
     return 0;
@@ -193,13 +171,10 @@ double computeAirDensity(double altitude) {
     assert(!(altitude > 80000));
     double upperAlt;
     double lowerAlt;
-    int lengthAirDensity = airDensityVector.size();
-    bool found = false;
-    int index = 0;
 
     if (altitude < 1000 && altitude > 0) {
         upperAlt = 1000;
-        lowerAlt = 1000;
+        lowerAlt = 0;
     }
     else if (altitude >= 1000 && altitude < 10000) {
         int intermediateVal = altitude / 1000;
@@ -224,36 +199,30 @@ double computeAirDensity(double altitude) {
             upperAlt = 30000;
         }
     }
+    else if (altitude >= 30000 && altitude <= 80000) {
+        if (altitude == 80000) {
+            lowerAlt = 70000;
+            upperAlt = 80000;
+        }
+        else {
+            int intermediateVal = altitude / 10000;
+            lowerAlt = intermediateVal * 10000;
+            upperAlt = lowerAlt + 10000;
+        }
+    }
     cout << lowerAlt << endl;
     cout << upperAlt << endl;
-    return 0;
 
+    assert(upperAlt <= 80000 && upperAlt >= 1000);
+    assert(lowerAlt <= 70000 && lowerAlt >= 0);
 
-    //while (index < lengthAirDensity && !found) {
-    //    if (altitude == airDensityVector[index]) {
-    //        lowerAlt = airDensityVector[index];
-    //        upperAlt = airDensityVector[index];
-    //        found = true;
-    //    }
-    //    else if (altitude > airDensityVector[index]
-    //        && altitude < airDensityVector[index + 1]) {
-    //        lowerAlt = airDensityVector[index];
-    //        upperAlt = airDensityVector[index + 1];
-    //        found = true;
-    //    }
-    //    else
-    //        index++;
-    //}
-    //assert(upperAlt <= 80000 && upperAlt >= 1000);
-    //assert(lowerAlt <= 70000 && lowerAlt >= 0);
-
-    //return linearInterpolation(
-    //    lowerAlt,
-    //    airDensityMap[lowerAlt],
-    //    upperAlt,
-    //    airDensityMap[upperAlt],
-    //    altitude
-    //);
+    return linearInterpolation(
+        lowerAlt,
+        airDensityMap[lowerAlt],
+        upperAlt,
+        airDensityMap[upperAlt],
+        altitude
+    );
 }
 
 
@@ -288,24 +257,24 @@ int main(int argc, char** argv)
 #endif // !_WIN32
 {
    // Initialize OpenGL
-   Position ptUpperRight;
-   ptUpperRight.setPixelsX(700.0);
-   ptUpperRight.setPixelsY(500.0);
-   Position().setZoom(40.0 /* 42 meters equals 1 pixel */);
-   Interface ui(0, NULL,
-      "Demo",   /* name on the window */
-      ptUpperRight);
+   //Position ptUpperRight;
+   //ptUpperRight.setPixelsX(700.0);
+   //ptUpperRight.setPixelsY(500.0);
+   //Position().setZoom(40.0 /* 42 meters equals 1 pixel */);
+   //Interface ui(0, NULL,
+   //   "Demo",   /* name on the window */
+   //   ptUpperRight);
 
-   // Initialize the demo
-   Demo demo(ptUpperRight);
+   //// Initialize the demo
+   //Demo demo(ptUpperRight);
 
-   // set everything into action
-   ui.run(callBack, &demo);
+   //// set everything into action
+   //ui.run(callBack, &demo);
     
-    //double angle;
-    //cout << "What is the angle of the howitzer where 0 is up? ";
-    //cin >> angle;
-    //cout << computeAirDensity(angle) << endl;
+    double angle;
+    cout << "What is the angle of the howitzer where 0 is up? ";
+    cin >> angle;
+    cout << computeAirDensity(angle) << endl;
 
 
    return 0;

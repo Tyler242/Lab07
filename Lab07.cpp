@@ -344,8 +344,7 @@ double degreesToRadians(const double degrees) {
  * Computes the drag coefficient based off of mach
  ********************************************************/
 double computeDragCoefficient( double mach) {
-    assert(!(mach > 5.00 && mach < 0.300));
-    double dragCoefficient = -1;
+    assert(!(mach > 5.00));
 
     // mach, dragCoefficient
     map<double, double> dragCoefficientMap{
@@ -364,26 +363,34 @@ double computeDragCoefficient( double mach) {
         {1.990, 0.2897},
         {2.870, 0.2297},
         {2.890, 0.2306},
-        {5.000, 0.2656},
+        {5.000, 0.2656}
     };
 
-    // Loop through machs in dragCoefficientMap until dragCoefficient is set
-    for (auto it = dragCoefficientMap.begin(); it != dragCoefficientMap.end() && dragCoefficient == -1; ++it)
+    double dragCoefficient = -1;
+    if (mach < 0.300) {
+        dragCoefficient = dragCoefficientMap[0.300];
+        return dragCoefficient;
+    }
+
+
+    //Loop through machs in dragCoefficientMap until dragCoefficient is set
+    for (auto it = dragCoefficientMap.begin(); it != dragCoefficientMap.end() && dragCoefficient == -1; it++)
     {
-        //cout << it->first << endl;
         if (mach == it->first) {
             dragCoefficient = it->second;
+            return dragCoefficient;
         }
         else if (mach < it->first) {
             double d1 = it->first;
             double r1 = it->second;
 
             // last element
-            --it;
+            it--;
             double d0 = it->first;
             double r0 = it->second;
 
             dragCoefficient = linearInterpolation(d0, r0, d1, r1, mach);
+            return dragCoefficient;
         }
         assert(it->first <= 5);
     };

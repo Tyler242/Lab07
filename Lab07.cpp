@@ -21,7 +21,7 @@
 #include <cmath>
 using namespace std;
 
-#define PI       3.14159265358979323846
+#define PI       3.14159
 
 /*************************************************************************
  * Demo
@@ -254,14 +254,14 @@ void findUpperLowerBound(double value, double& upper, double& lower, double max,
  * Computes the air density based on an altitude
  ********************************************************/
 double computeAirDensity(double altitude) {
-    assert(!(altitude > 80000));
+    assert(!(altitude > 25000));
     double upperAlt;
     double lowerAlt;
 
     findUpperLowerBound(altitude, upperAlt, lowerAlt, 80000, 0);
 
-    cout << lowerAlt << endl;
-    cout << upperAlt << endl;
+    //cout << lowerAlt << endl;
+    //cout << upperAlt << endl;
 
     assert(upperAlt <= 80000 && upperAlt >= 1000);
     assert(lowerAlt <= 70000 && lowerAlt >= 0);
@@ -280,14 +280,14 @@ double computeAirDensity(double altitude) {
  * Computes the speed of sound based on an altitude
  ********************************************************/
 double computeSpeedOfSound(double altitude) {
-    assert(altitude <= 40000);
+    assert(altitude <= 25000);
     double upperAlt;
     double lowerAlt;
 
     findUpperLowerBound(altitude, upperAlt, lowerAlt, 40000, 0);
 
-    cout << lowerAlt << endl;
-    cout << upperAlt << endl;
+    //cout << lowerAlt << endl;
+    //cout << upperAlt << endl;
     
     assert(upperAlt <= 40000 && upperAlt >= 1000);
     assert(lowerAlt <= 30000 && lowerAlt >= 0);
@@ -312,8 +312,8 @@ double computeGravity(double altitude) {
 
     findUpperLowerBound(altitude, upperAlt, lowerAlt, 25000, 0);
 
-    cout << lowerAlt << endl;
-    cout << upperAlt << endl;
+    //cout << lowerAlt << endl;
+    //cout << upperAlt << endl;
     
     assert(upperAlt <= 25000 && upperAlt >= 1000);
     assert(lowerAlt <= 20000 && lowerAlt >= 0);
@@ -343,7 +343,7 @@ double degreesToRadians(const double degrees) {
  * COMPUTE DRAG COEFFICIENT
  * Computes the drag coefficient based off of mach
  ********************************************************/
-double computeDragCoefficient(const double mach) {
+double computeDragCoefficient( double mach) {
     assert(!(mach > 5.00 && mach < 0.300));
     double dragCoefficient = -1;
 
@@ -370,6 +370,7 @@ double computeDragCoefficient(const double mach) {
     // Loop through machs in dragCoefficientMap until dragCoefficient is set
     for (auto it = dragCoefficientMap.begin(); it != dragCoefficientMap.end() && dragCoefficient == -1; ++it)
     {
+        //cout << it->first << endl;
         if (mach == it->first) {
             dragCoefficient = it->second;
         }
@@ -384,22 +385,28 @@ double computeDragCoefficient(const double mach) {
 
             dragCoefficient = linearInterpolation(d0, r0, d1, r1, mach);
         }
+        assert(it->first <= 5);
     };
 
     return dragCoefficient;
 }
 
 double computeAreaCircle(double radius) {
-    return (radius * radius * 3.14159);
+    return (radius * radius * PI);
 }
 
 double computeDragForce(double altitude, double v) {
-    double mach = computeSpeedOfSound(altitude);
+    try {
+        double mach = computeSpeedOfSound(altitude);
 
-    double c = computeDragCoefficient(mach);
-    double p = computeAirDensity(altitude);
-    double a = computeAreaCircle(154.89 / 2000);
-    return 0.5 * c * p * (v * v) * a;
+        double c = computeDragCoefficient(v / mach);
+        double p = computeAirDensity(altitude);
+        double a = computeAreaCircle(154.89 / 2000);
+        return 0.5 * c * p * (v * v) * a;
+    } 
+    catch (exception ex) {
+        cout << "error" << endl;
+    }
 }
 
 double computeAcceleration(double force, double mass) {
@@ -432,8 +439,8 @@ double computeVComponent(double v, double a, double t) {
     return v + a * t;
 }
 
-double computePosition(double pos, double v, double a, double t) {
-    return pos + (v * t) + (0.5 * a * t * t);
+double computePosition(double v, double a, double t) {
+    return (v * t) + (0.5 * a * t * t);
 }
 /*********************************
  * Initialize the simulation and set it in motion
@@ -468,21 +475,52 @@ int main(int argc, char** argv)
     double angle;
     cout << "What is the angle of the howitzer where 0 is up? ";
     cin >> angle;
-
-    cout << computeSpeedOfSound(angle) << endl;
+    angle = degreesToRadians(angle);
 
     // Init variables
     Position position = Position();
     double distance = -1;
     double hangTime = 0;
+    double t = 0.01;
 
+    double v = 827;
+    double ddx;
+    double ddy;
+    double dy = computeDyComponent(v, angle);
+    double dx = computeDxComponent(v, angle);
+    double prX;
+    double prY;
+    do {
+        try {
+            // get acceleration
+            assert(position.getMetersY() <= 25000);
+            double dragAccel = getAcceleration(position.getMetersY(), v);
 
-    while (position.getMetersY() > 0) {
-        hangTime += 0.1;
+            ddx = -computeDxComponent(dragAccel, angle);
+            ddy = -computeDyComponent(dragAccel, angle) - computeGravity(position.getMetersY());
+            // get->update position
+            prX = position.getMetersX();
+            prY = position.getMetersY();
+            position.addMetersX(computePosition(dx, ddx, t));
+            position.addMetersY(computePosition(dy, ddy, t));
+            // get->update velocity
+            dx = computeVComponent(dx, ddx, t);
+            dy = computeVComponent(dy, ddy, t);
+            v = getTotalComponent(dx, dy);
+            // update the angle (direction of projectile)
+            hangTime += 0.01;
+        }
+        catch (exception ex) {
+            cout << "error in main loop" << endl;
+        }
     }
+    while (position.getMetersY() > 0);
 
-    cout << "Distance:      " << distance << "m       Hang Time:      " << hangTime << endl;
+    if (position.getMetersY() != 0)
+        distance = linearInterpolation(prY, prX, position.getMetersY(), position.getMetersX(), 0);
+    else
+        distance = position.getMetersX();
 
-
+   cout << "Distance:      " << distance << "m       Hang Time:      " << hangTime << endl;
    return 0;
 }

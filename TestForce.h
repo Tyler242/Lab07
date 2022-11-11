@@ -11,7 +11,7 @@ public:
 	* Run all the tests contained in this class.
 	*****************************************************/
 	void run() {
-		cout << "Running Force Tests." << endl;
+		cout << "Running Force Tests" << endl;
 
 		TestComputeForce_LowerBoundAlt();
 		TestComputeForce_MidAlt();

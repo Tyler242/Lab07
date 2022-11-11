@@ -1,4 +1,13 @@
 #pragma once
+/***********************************************************************
+ * Header File:
+ *    Test Force: Test the Force class
+ * Author:
+ *    Caleb Rasmussen & Tyler Shellman
+ * Summary:
+ *    All the unit tests for Force
+ ************************************************************************/
+
 #include <cassert>
 #include "Force.h"
 

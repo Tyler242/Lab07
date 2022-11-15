@@ -26,6 +26,7 @@ class TestVelocity
 public:
     void run()
     {
+        cout << "Running Velocity Tests" << endl;
         defaultConstructor();
 
         nonDefaultConstructorPostive();
@@ -76,7 +77,7 @@ private:
         // Verify
         assert(velocity.dx == 10.0);
         assert(velocity.dy == 20.0);
-        assert(velocity.v == 22.36);
+        assert(velocity.v == 22.360679774997898);
 
         // Teardown
     }
@@ -91,7 +92,7 @@ private:
         // Verify
         assert(velocity.dx == -10.0);
         assert(velocity.dy == -20.0);
-        assert(velocity.v == 22.36);
+        assert(velocity.v == 22.360679774997898);
 
         // Teardown
     }
@@ -155,8 +156,8 @@ private:
 
         // Verify
         assert(velocity.dx == 0.0);
-        assert(velocity.dy == -0.09);
-        assert(velocity.v == 0.09);
+        assert(velocity.dy == -0.0097300000000000008);
+        assert(velocity.v == 0.0097300000000000008);
 
         // Teardown
     };
@@ -175,7 +176,7 @@ private:
         // Verify
         assert(velocity.dx == 719.9);
         assert(velocity.dy == -29.52);
-        assert(velocity.v == 719.61);
+        assert(velocity.v == 720.50498985086836);
 
         // Teardown
     };

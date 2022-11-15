@@ -17,6 +17,7 @@
 #include "ground.h"     // for GROUND
 #include "position.h"   // for POSITION
 #include "TestForce.h"
+#include "TestVelocity.h"
 #include <map>
 #include <vector>
 #include <cmath>
@@ -188,6 +189,8 @@ double Position::metersFromPixels = 40.0;
 #include <windows.h>
 #include "TestForce.h"
 #include "TestForce.h"
+#include "TestVelocity.h"
+#include "Velocity.h"
 int WINAPI wWinMain(
    _In_ HINSTANCE hInstance,
    _In_opt_ HINSTANCE hPrevInstance,
@@ -214,4 +217,6 @@ int main(int argc, char** argv)
     
     TestForce testForce = TestForce();
     testForce.run();
+    TestVelocity testVelocity = TestVelocity();
+    testVelocity.run();
 }

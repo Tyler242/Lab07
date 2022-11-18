@@ -49,5 +49,6 @@ private:
 		return ((r1 - r0) * (d - d0)) / (d1 - d0) + r0;
 	}
 	friend class TestForce;
+	friend class TestAcceleration;
 };
 

@@ -18,6 +18,7 @@
 #include "position.h"   // for POSITION
 #include "TestForce.h"
 #include "TestVelocity.h"
+#include "TestAcceleration.h"
 #include <map>
 #include <vector>
 #include <cmath>
@@ -219,4 +220,6 @@ int main(int argc, char** argv)
     testForce.run();
     TestVelocity testVelocity = TestVelocity();
     testVelocity.run();
+    TestAcceleration testAccel = TestAcceleration();
+    testAccel.run();
 }

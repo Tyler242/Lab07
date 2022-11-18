@@ -45,6 +45,12 @@
     <ClCompile Include="Velocity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Acceleration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestAcceleration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ground.h">
@@ -81,6 +87,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Velocity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Acceleration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestAcceleration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

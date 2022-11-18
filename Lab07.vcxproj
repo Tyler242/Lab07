@@ -142,6 +142,7 @@
     <ClCompile Include="Acceleration.cpp" />
     <ClCompile Include="Force.cpp" />
     <ClCompile Include="ground.cpp" />
+    <ClCompile Include="Howitzer.cpp" />
     <ClCompile Include="Lab07.cpp" />
     <ClCompile Include="position.cpp" />
     <ClCompile Include="MapReader.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Acceleration.h" />
     <ClInclude Include="Force.h" />
     <ClInclude Include="ground.h" />
+    <ClInclude Include="Howitzer.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="MapReader.h" />
     <ClInclude Include="test.h" />

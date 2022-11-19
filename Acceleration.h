@@ -16,7 +16,7 @@ private:
 	double ddx;
 	double ddy;
 	double totalAccel;
-	double angle;
+	double angle; // in radians
 	Force force;
 	double computeGravity(const double altitude);
 	friend class TestAcceleration;

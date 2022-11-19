@@ -20,7 +20,7 @@ public:
 
 		// computeAcceleration(altitude, velocity, time) tests
 		TestComputeAcceleration_FiringAccel();
-		TestComputeAcceleration_PeakAccel();
+		TestComputeAcceleration_UpperAlt();
 	}
 
 private:
@@ -101,8 +101,7 @@ private:
 
 	void TestComputeAcceleration_FiringAccel() {
 		// setup
-		Acceleration accel;
-		accel.angle = 45 / 360 * 2 * 3.14159;
+		Acceleration accel = Acceleration((45.0 / 360.0) * (2.0 * 3.14159));
 		double altitude = 0;
 		double velocity = 827;
 		double time = 0.1;
@@ -114,11 +113,13 @@ private:
 		accel.computeAcceleration(altitude, velocity, time);
 
 		// verify
-		cout << "ddx: " << accel.ddx 
-			<< " ddy: " << accel.ddy
-			<< " a: " << accel.totalAccel << endl;
+		assert(accel.ddx == -31.018786539924552);
+		assert(accel.ddy == -40.825827695519536);
+		assert(accel.totalAccel == 43.867217714527264);
+
+		// teardown
 	}
-	void TestComputeAcceleration_PeakAccel() {
+	void TestComputeAcceleration_UpperAlt() {
 		// setup
 		Acceleration accel;
 		double altitude = 24000;
@@ -129,9 +130,11 @@ private:
 		accel.computeAcceleration(altitude, velocity, time);
 
 		// verify
-		cout << "ddx: " << accel.ddx
-			<< " ddy: " << accel.ddy
-			<< " a: " << accel.totalAccel << endl;
+		assert(accel.ddx == -0.0);
+		assert(accel.ddy == -9.7494398158025906);
+		assert(accel.totalAccel == 0.016439815802589245);
+
+		// teardown
 	}
 };
 

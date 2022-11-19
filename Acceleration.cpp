@@ -8,14 +8,14 @@ Acceleration::Acceleration() {
 	ddx = 0;
 	ddy = 0;
 	totalAccel = 0;
-	angle = 0;
+	angle = 0;  // in radians
 }
 
 Acceleration::Acceleration(const double angle) {
 	ddx = 0;
 	ddy = 0;
 	totalAccel = 0;
-	this->angle = angle;
+	this->angle = angle; // in radians
 }
 
 double Acceleration::computeGravity(const double altitude) {

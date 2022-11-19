@@ -42,6 +42,8 @@ public:
 		TestComputeAirDnsty_MidVal();
 		TestComputeAirDnsty_MidBound();
 		TestComputeAirDnsty_UpperBound();
+
+		cout << "Force Tests Passed" << endl;
 	}
 private:
 	/****************************************************

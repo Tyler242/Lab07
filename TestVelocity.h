@@ -49,6 +49,8 @@ public:
         getVelocityDefault();
         getVelocityDefault();
 
+        cout << "Velocity Tests Passed" << endl;
+
     };
 
 private:

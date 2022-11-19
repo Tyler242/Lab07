@@ -21,6 +21,8 @@ public:
 		// computeAcceleration(altitude, velocity, time) tests
 		TestComputeAcceleration_FiringAccel();
 		TestComputeAcceleration_UpperAlt();
+
+		cout << "Acceleration Tests Passed" << endl;
 	}
 
 private:

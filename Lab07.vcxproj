@@ -140,13 +140,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Acceleration.cpp" />
+    <ClCompile Include="Constants.cpp" />
     <ClCompile Include="Force.cpp" />
     <ClCompile Include="ground.cpp" />
     <ClCompile Include="Howitzer.cpp" />
     <ClCompile Include="Lab07.cpp" />
     <ClCompile Include="position.cpp" />
     <ClCompile Include="MapReader.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="Trajectory.cpp" />
     <ClCompile Include="uiDraw.cpp" />
     <ClCompile Include="uiInteract.cpp" />
     <ClCompile Include="Velocity.cpp" />
@@ -158,12 +161,14 @@
     <ClInclude Include="Howitzer.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="MapReader.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="TestAcceleration.h" />
     <ClInclude Include="TestForce.h" />
     <ClInclude Include="testGround.h" />
     <ClInclude Include="testPosition.h" />
     <ClInclude Include="TestVelocity.h" />
+    <ClInclude Include="Trajectory.h" />
     <ClInclude Include="uiDraw.h" />
     <ClInclude Include="uiInteract.h" />
     <ClInclude Include="Velocity.h" />

@@ -11,7 +11,7 @@ public:
 	double getDY() const {
 		return dy;
 	}
-	double getVelocity() {
+	double getVelocity() const {
 		return v;
 	}
 private:

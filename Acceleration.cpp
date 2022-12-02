@@ -1,8 +1,7 @@
 #include <cassert>
 #include <cmath>
 #include "Acceleration.h"
-
-#define PROJECTILE_MASS 46.7;
+#include "Constants.cpp"
 
 Acceleration::Acceleration() {
 	ddx = 0;

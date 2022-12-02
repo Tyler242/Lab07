@@ -15,15 +15,11 @@
  * DEFAULT CONSTUCTOR
  * Creates a new instance of Howitzer
  *****************************************************/
-Howitzer::Howitzer(const Position ptUpperRight) 
+Howitzer::Howitzer(const Position& ptHowitzer) :
+	position(ptHowitzer)
 {
-	angle = 0.0;
 	time = 0.0;
 	canShoot = true;
-	
-	// Generates random starting postion
-	position.setPixelsX(1 + (rand() % int(ptUpperRight.getPixelsX())));
-	position.setPixelsY(0.0);
 }
 
 
@@ -35,27 +31,6 @@ Position Howitzer::getPosition() const
 {
 	return position;
 }
-
-
-/*****************************************************
- * ADD ANGLE
- * Adds an angle to the current angle of the Howitzer
- *****************************************************/
-void Howitzer::addAngle(const double angle)
-{
-	this->angle += angle;
-}
-
-
-/*****************************************************
- * GET ANGLE
- * Returns the current angle of the Howitzer barrel
- *****************************************************/
-double Howitzer::getAngle() const
-{
-	return angle;
-}
-
 
 /*****************************************************
  * CAN FIRE
@@ -92,15 +67,12 @@ void Howitzer::reload()
  * GET POSITION
  * Resets the howitzer with new postion
  *****************************************************/
-void Howitzer::reset(const Position ptUpperRight)
+void Howitzer::reset(const Position& ptHowitzer)
 {
-	angle = 0.0;
 	time = 0.0;
 	canShoot = true;
 
-	// Generates random starting postion
-	position.setPixelsX(1 + (rand() % int(ptUpperRight.getPixelsX())));
-	position.setPixelsY(0.0);
+	position = ptHowitzer;
 }
 
 
@@ -108,7 +80,7 @@ void Howitzer::reset(const Position ptUpperRight)
  * GET POSITION
  * Returns the current position of the Howitzer
  *****************************************************/
-void Howitzer::draw(ogstream& gout) const
+void Howitzer::draw(ogstream& gout, const double angle) const
 {
 	gout.drawHowitzer(position, angle, time);
 }

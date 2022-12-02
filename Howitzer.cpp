@@ -18,7 +18,6 @@
 Howitzer::Howitzer(const Position& ptHowitzer) :
 	position(ptHowitzer)
 {
-	time = 0.0;
 	canShoot = true;
 }
 
@@ -49,7 +48,6 @@ bool Howitzer::canFire() const
 void Howitzer::fireProjectile()
 {
 	canShoot = false;
-	time = 0.0;
 }
 
 
@@ -69,7 +67,6 @@ void Howitzer::reload()
  *****************************************************/
 void Howitzer::reset(const Position& ptHowitzer)
 {
-	time = 0.0;
 	canShoot = true;
 
 	position = ptHowitzer;
@@ -80,7 +77,7 @@ void Howitzer::reset(const Position& ptHowitzer)
  * GET POSITION
  * Returns the current position of the Howitzer
  *****************************************************/
-void Howitzer::draw(ogstream& gout, const double angle) const
+void Howitzer::draw(ogstream& gout, const double angle, const double time) const
 {
 	gout.drawHowitzer(position, angle, time);
 }

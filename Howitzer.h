@@ -24,7 +24,8 @@ using namespace std;
 class Howitzer
 {
 public:
-	// Constructor
+	// Constructors
+	Howitzer() {};
 	Howitzer(const Position& ptHowitzer);
 
 	Position getPosition() const;
@@ -37,7 +38,7 @@ public:
 
 	void reload();
 	void reset(const Position& ptHowitzer);
-	void draw(ogstream& gout, const double angle) const;
+	void draw(ogstream& gout, const double angle, const double time) const;
 
 private:
 	Position position;	// location of the howitzer on the screen

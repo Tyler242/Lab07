@@ -49,6 +49,6 @@ private:
 	Position ptHowitzer;
 	Position ptUpperRight;
 	double howitzerAngle;	// angle of the howitzer barrel
-	double time;			// amount of time since the last firing in seconds
+	double hangTime;			// amount of time since the last firing in seconds
 };
 

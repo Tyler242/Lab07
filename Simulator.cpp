@@ -19,7 +19,7 @@ Simulator::Simulator(const Position& ptUpperRight) :
 	ptUpperRight(ptUpperRight), ground(ptUpperRight), trajectory()
 {
 	howitzerAngle = 0.0;
-	time = 0.0;
+	hangTime = 0.0;
 
 	// Set howitzer position
 	ptHowitzer.setPixelsX(1 + (rand() % int(ptUpperRight.getPixelsX())));		// Set X, radnome
@@ -29,7 +29,7 @@ Simulator::Simulator(const Position& ptUpperRight) :
 	howitzer = Howitzer(ptHowitzer);
 
 	// Project position
-	projectile = Projectile(angle, ptHowitzer);
+	projectile = Projectile(ptHowitzer, howitzerAngle);
 
 }
 
@@ -42,7 +42,7 @@ Simulator::Simulator(const Position& ptUpperRight) :
 void Simulator::reset()
 {
 	howitzerAngle = 0.0;
-	time = 0.0;
+	hangTime = 0.0;
 	
 	// Set new howitzer position
 	ptHowitzer.setPixelsX(1 + (rand() % int(ptUpperRight.getPixelsX())));		// Set X, radnome
@@ -53,7 +53,7 @@ void Simulator::reset()
 
 	trajectory.reset();
 
-	projectile = Projectile(howitzerAngle, ptHowitzer);
+	projectile = Projectile(ptHowitzer, howitzerAngle);
 }
 
 
@@ -80,7 +80,7 @@ void Simulator::input(const Interface* pUI)
 	if (pUI->isSpace())
 		if (howitzer.canFire()) {
 			howitzer.fireProjectile();
-			time = 0.0;
+			hangTime = 0.0;
 		}
 }
 
@@ -104,6 +104,6 @@ void Simulator::draw()
 	ogstream gout;
 
 	ground.draw(gout);
-	howitzer.draw(gout, howitzerAngle);
+	howitzer.draw(gout, howitzerAngle, hangTime);
 }
 

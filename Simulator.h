@@ -32,6 +32,9 @@ public:
 	// resets the simulator components
 	void reset();
 
+	// resets round
+	void reload();
+
 	// handles user input
 	void input(const Interface* pUI);
 
@@ -49,6 +52,6 @@ private:
 	Position ptHowitzer;
 	Position ptUpperRight;
 	double howitzerAngle;	// angle of the howitzer barrel
-	double hangTime;			// amount of time since the last firing in seconds
+	double hangTime;		// amount of time since the last firing in seconds
 };
 

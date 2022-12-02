@@ -30,9 +30,6 @@ public:
 
 	Position getPosition() const;
 
-	void addAngle(const double angle);
-	double getAngle() const;
-
 	bool canFire() const;
 	void fireProjectile();
 

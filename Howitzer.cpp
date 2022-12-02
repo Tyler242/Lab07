@@ -43,7 +43,7 @@ bool Howitzer::canFire() const
 
 /*****************************************************
  * FIRE PROJECTILE
- *
+ * Turns off canShoot
  *****************************************************/
 void Howitzer::fireProjectile()
 {
@@ -68,7 +68,7 @@ void Howitzer::reload()
 void Howitzer::reset(const Position& ptHowitzer)
 {
 	canShoot = true;
-
+	
 	position = ptHowitzer;
 }
 

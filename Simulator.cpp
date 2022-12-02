@@ -27,10 +27,6 @@ Simulator::Simulator(const Position& ptUpperRight) :
 	ground.reset(ptHowitzer);		// Set Y
 
 	howitzer = Howitzer(ptHowitzer);
-
-	// Project position
-	projectile = Projectile(ptHowitzer, howitzerAngle);
-
 }
 
 
@@ -42,7 +38,6 @@ Simulator::Simulator(const Position& ptUpperRight) :
 void Simulator::reset()
 {
 	howitzerAngle = 0.0;
-	hangTime = 0.0;
 	
 	// Set new howitzer position
 	ptHowitzer.setPixelsX(1 + (rand() % int(ptUpperRight.getPixelsX())));		// Set X, radnome
@@ -52,15 +47,23 @@ void Simulator::reset()
 	howitzer.reset(ptHowitzer);
 
 	trajectory.reset();
+}
 
-	projectile = Projectile(ptHowitzer, howitzerAngle);
+
+/********************************************************
+ * RELOAD
+ * Resets the projectile and trajectory 
+ ********************************************************/
+void Simulator::reload()
+{
+	howitzer.reload();
+	trajectory.reset();
 }
 
 
 /********************************************************
  * INPUT
  * Handle input from the user to move or fire the howitzer
- * 
  ********************************************************/
 void Simulator::input(const Interface* pUI)
 {
@@ -81,6 +84,7 @@ void Simulator::input(const Interface* pUI)
 		if (howitzer.canFire()) {
 			howitzer.fireProjectile();
 			hangTime = 0.0;
+			projectile = Projectile(ptHowitzer, howitzerAngle);
 		}
 }
 
@@ -91,7 +95,20 @@ void Simulator::input(const Interface* pUI)
  ********************************************************/
 void Simulator::run(const Interface* pUI)
 {
-	
+	if (howitzer.canFire() == true) {
+		input(pUI);
+	}
+
+	else if (!projectile.isFlying()) {
+		if (projectile.isLandedOnTarget()) {
+			reset();
+		}
+
+		// Reset projectile and trajectory
+		else {
+			reload();
+		}
+	}
 }
 
 
@@ -105,5 +122,6 @@ void Simulator::draw()
 
 	ground.draw(gout);
 	howitzer.draw(gout, howitzerAngle, hangTime);
+	trajectory.draw(gout);
 }
 

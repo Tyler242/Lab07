@@ -147,8 +147,6 @@
     <ClCompile Include="position.cpp" />
     <ClCompile Include="MapReader.cpp" />
     <ClCompile Include="test.cpp" />
-    <ClCompile Include="TestAcceleration.cpp" />
-    <ClCompile Include="TestVelocity.cpp" />
     <ClCompile Include="uiDraw.cpp" />
     <ClCompile Include="uiInteract.cpp" />
     <ClCompile Include="Velocity.cpp" />

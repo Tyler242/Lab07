@@ -50,7 +50,6 @@ public:
         getVelocityDefault();
 
         cout << "Velocity Tests Passed" << endl;
-
     };
 
 private:

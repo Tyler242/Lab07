@@ -39,16 +39,10 @@
     <ClCompile Include="MapReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestVelocity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Velocity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Acceleration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestAcceleration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Howitzer.cpp">

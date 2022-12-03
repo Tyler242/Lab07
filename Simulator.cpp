@@ -11,7 +11,6 @@
 #include "Simulator.h"
 #include "Constants.cpp"
 
-
 /********************************************************
  * SIMULATOR constructor
  * Creates a new instance of Simulator
@@ -23,7 +22,8 @@ Simulator::Simulator(const Position& ptUpperRight) :
 	hangTime = 0.0;
 
 	// Set howitzer position
-	ptHowitzer.setPixelsX(1 + (rand() % int(ptUpperRight.getPixelsX())));		// Set X, radnome
+	// Set X, radnome
+	ptHowitzer.setPixelsX(1 + (rand() % int(ptUpperRight.getPixelsX())));
 
 	ground.reset(ptHowitzer);		// Set Y
 
@@ -42,7 +42,8 @@ void Simulator::reset()
 	howitzerAngle = 0.0;
 	
 	// Set new howitzer position
-	ptHowitzer.setPixelsX(1 + (rand() % int(ptUpperRight.getPixelsX())));		// Set X, radnome
+	// Set X, radnome
+	ptHowitzer.setPixelsX(1 + (rand() % int(ptUpperRight.getPixelsX())));
 
 	ground.reset(ptHowitzer);		// Set Y
 	
@@ -138,8 +139,17 @@ void Simulator::run()
 void Simulator::draw()
 {
 	ogstream gout;
-
+	ogstream statsOut(Position(200, 200));
 	ground.draw(gout);
-	howitzer.draw(gout, howitzerAngle, hangTime);
-	trajectory.draw(gout);
+
+	if (projectileActive) {
+		howitzer.draw(gout, howitzerAngle, hangTime);
+		trajectory.draw(gout);
+		// draw projectile altitude, speed, distance, and hang-time
+	}
+	else {
+		howitzer.draw(gout, howitzerAngle, 5);
+		//statsOut.drawText(Position(200, 200), );
+		// draw howitzer angle
+	}
 }

@@ -31,25 +31,3 @@ void Projectile::move() {
 		+ 0.5 * a.getDDY() * TIME_INTERVAL * TIME_INTERVAL
 	);
 }
-
-//void Projectile::hitGround(Ground& ground) {
-//	if (0 >= ground.getElevationMeters(position)) {
-//		flying = false;
-//	}
-//	else {
-//		flying = true;
-//		onTarget = false;
-//	}
-//}
-//
-//void Projectile::hitTarget(Ground& ground) {
-//	Position target = ground.getTarget();
-//	if (target.getMetersX() == position.getMetersX() &&
-//		target.getMetersY() == position.getMetersY()) {
-//		flying = false;
-//		onTarget = true;
-//	}
-//	else {
-//		onTarget = false;
-//	}
-//}

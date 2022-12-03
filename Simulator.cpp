@@ -7,7 +7,7 @@
  *    Manages the components and their iteractions for the lHowtizer 
  *	  simulation.
  ************************************************************************/
-
+#include <string>
 #include "Simulator.h"
 #include "Constants.cpp"
 
@@ -141,17 +141,28 @@ void Simulator::run()
 void Simulator::draw()
 {
 	ogstream gout;
-	ogstream statsOut(Position(200, 200));
-	ground.draw(gout);
+	ogstream statsOut;
+	ground.draw(gout); 
 
 	if (projectileActive) {
 		howitzer.draw(gout, howitzerAngle, hangTime);
 		trajectory.draw(gout);
+
 		// draw projectile altitude, speed, distance, and hang-time
+		string altMsg =      "Altitude:  " + std::to_string(projectile.getPos().getMetersY());
+		string speedMsg =    "Speed:     " + std::to_string(projectile.getSpeed());
+		string distanceMsg = "Distance   " + std::to_string(projectile.getPos().getMetersX());
+		string hangtimeMsg = "Hang-time: " + std::to_string(hangTime);
+
+		statsOut.drawText(Position(22000, 17950), altMsg.data());
+		statsOut.drawText(Position(22000, 17250), speedMsg.data());
+		statsOut.drawText(Position(22000, 16550), distanceMsg.data());
+		statsOut.drawText(Position(22000, 15850), hangtimeMsg.data());
+
 	}
 	else {
 		howitzer.draw(gout, howitzerAngle, 5);
-		//statsOut.drawText(Position(200, 200), );
-		// draw howitzer angle
+		string angleMessage = "Angle: " + std::to_string(howitzerAngle);
+		statsOut.drawText(Position(22000, 17950), angleMessage.data());
 	}
 }

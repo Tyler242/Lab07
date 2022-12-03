@@ -1,28 +1,25 @@
 /*************************************************************
  * 1. Name:
- *      The Key
+ *      Caleb Rasmussen & Tyler Shellman
  * 2. Assignment Name:
  *      Lab 08: M777 Howitzer
  * 3. Assignment Description:
  *      Simulate firing the M777 howitzer 15mm artillery piece
  * 4. What was the hardest part? Be as specific as possible.
- *      ??
+ *      Biggest issue was probably the ground. The 
+ *      getElevationMeters description is somewhat misleading.
  * 5. How long did it take for you to complete the assignment?
- *      ??
+ *      Too long. Probably around 12 hours.
  *****************************************************************/
 
 #include <cassert>      // for ASSERT
 #include "uiInteract.h" // for INTERFACE
 #include "uiDraw.h"     // for RANDOM and DRAW*
-#include "ground.h"     // for GROUND
 #include "position.h"   // for POSITION
-#include "TestForce.h"
-#include "TestVelocity.h"
-#include "TestAcceleration.h"
+//#include "TestForce.h"
+//#include "TestVelocity.h"
+//#include "TestAcceleration.h"
 #include "Simulator.h"
-#include <map>
-#include <vector>
-#include <cmath>
 using namespace std;
 
 /*************************************
@@ -41,62 +38,6 @@ void callBack(const Interface* pUI, void* p)
    simulator->input(pUI);
 
    simulator->draw();
-
-   // move a large amount
-   //if (pUI->isRight())
-   //   pDemo->angle += 0.05;
-   //if (pUI->isLeft())
-   //   pDemo->angle -= 0.05;
-
-   //// move by a little
-   //if (pUI->isUp())
-   //   pDemo->angle += (pDemo->angle >= 0 ? -0.003 : 0.003);
-   //if (pUI->isDown())
-   //   pDemo->angle += (pDemo->angle >= 0 ? 0.003 : -0.003);
-
-   //// fire that gun
-   //if (pUI->isSpace())
-   //   pDemo->time = 0.0;
-
-   ////
-   //// perform all the game logic
-   ////
-
-   //// advance time by half a second.
-   //pDemo->time += 0.5;
-
-   //// move the projectile across the screen
-   //for (int i = 0; i < 20; i++)
-   //{
-   //   // this bullet is moving left at 1 pixel per frame
-   //   double x = pDemo->projectilePath[i].getPixelsX();
-   //   x -= 1.0;
-   //   if (x < 0)
-   //      x = pDemo->ptUpperRight.getPixelsX();
-   //   pDemo->projectilePath[i].setPixelsX(x);
-   //}
-
-   ////
-   //// draw everything
-   ////
-
-   //ogstream gout(Position(10.0, pDemo->ptUpperRight.getPixelsY() - 20.0));
-
-   //// draw the ground first
-   //pDemo->ground.draw(gout);
-
-   //// draw the howitzer
-   //gout.drawHowitzer(pDemo->ptHowitzer, pDemo->angle, pDemo->time);
-
-   //// draw the projectile
-   //for (int i = 0; i < 20; i++)
-   //   gout.drawProjectile(pDemo->projectilePath[i], 0.5 * (double)i);
-
-   //// draw some text on the screen
-   //gout.setf(ios::fixed | ios::showpoint);
-   //gout.precision(1);
-   //gout << "Time since the bullet was fired: "
-   //     << pDemo->time << "s\n";
 }
 
 double Position::metersFromPixels = 40.0;

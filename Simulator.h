@@ -39,7 +39,7 @@ public:
 	void input(const Interface* pUI);
 
 	// runs the simulator
-	void run(const Interface* pUI);
+	void run();
 
 	// draws all components
 	void draw();
@@ -53,5 +53,6 @@ private:
 	Position ptUpperRight;
 	double howitzerAngle;	// angle of the howitzer barrel
 	double hangTime;		// amount of time since the last firing in seconds
+	bool projectileActive;
 };
 

@@ -21,4 +21,3 @@ private:
 	double computeGravity(const double altitude);
 	friend class TestAcceleration;
 };
-

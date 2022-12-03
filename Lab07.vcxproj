@@ -163,6 +163,7 @@
     <ClInclude Include="position.h" />
     <ClInclude Include="MapReader.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="ProjectileData.h" />
     <ClInclude Include="Simulator.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="TestAcceleration.h" />

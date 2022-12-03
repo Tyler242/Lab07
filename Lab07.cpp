@@ -19,50 +19,11 @@
 #include "TestForce.h"
 #include "TestVelocity.h"
 #include "TestAcceleration.h"
+#include "Simulator.h"
 #include <map>
 #include <vector>
 #include <cmath>
 using namespace std;
-
-#define PI        3.14159
-#define iVelocity 827.0
-
-/*************************************************************************
- * Demo
- * Test structure to capture the LM that will move around the screen
- *************************************************************************/
-class Demo
-{
-public:
-   Demo(Position ptUpperRight) :
-      ptUpperRight(ptUpperRight),
-      ground(ptUpperRight),
-      time(0.0),
-      angle(0.0)
-   {
-      // Set the horizontal position of the howitzer. This should be random.
-      ptHowitzer.setPixelsX(Position(ptUpperRight).getPixelsX() / 2.0);
-
-      // Generate the ground and set the vertical position of the howitzer.
-      ground.reset(ptHowitzer);
-
-      // This is to make the bullet travel across the screen. Notice how there are 
-      // 20 pixels, each with a different age. This gives the appearance
-      // of a trail that fades off in the distance.
-      for (int i = 0; i < 20; i++)
-      {
-         projectilePath[i].setPixelsX((double)i * 2.0);
-         projectilePath[i].setPixelsY(ptUpperRight.getPixelsY() / 1.5);
-      }
-   }
-
-   Ground ground;                 // the ground
-   Position  projectilePath[20];  // path of the projectile
-   Position  ptHowitzer;          // location of the howitzer
-   Position  ptUpperRight;        // size of the screen
-   double angle;                  // angle of the howitzer 
-   double time;                   // amount of time since the last firing
-};
 
 /*************************************
  * All the interesting work happens here, when
@@ -75,115 +36,71 @@ void callBack(const Interface* pUI, void* p)
 {
    // the first step is to cast the void pointer into a game object. This
    // is the first step of every single callback function in OpenGL. 
-   Demo* pDemo = (Demo*)p;
+   Simulator* simulator = (Simulator*)p;
 
-   //
-   // accept input
-   //
+   simulator->input(pUI);
+
+   simulator->draw();
 
    // move a large amount
-   if (pUI->isRight())
-      pDemo->angle += 0.05;
-   if (pUI->isLeft())
-      pDemo->angle -= 0.05;
+   //if (pUI->isRight())
+   //   pDemo->angle += 0.05;
+   //if (pUI->isLeft())
+   //   pDemo->angle -= 0.05;
 
-   // move by a little
-   if (pUI->isUp())
-      pDemo->angle += (pDemo->angle >= 0 ? -0.003 : 0.003);
-   if (pUI->isDown())
-      pDemo->angle += (pDemo->angle >= 0 ? 0.003 : -0.003);
+   //// move by a little
+   //if (pUI->isUp())
+   //   pDemo->angle += (pDemo->angle >= 0 ? -0.003 : 0.003);
+   //if (pUI->isDown())
+   //   pDemo->angle += (pDemo->angle >= 0 ? 0.003 : -0.003);
 
-   // fire that gun
-   if (pUI->isSpace())
-      pDemo->time = 0.0;
+   //// fire that gun
+   //if (pUI->isSpace())
+   //   pDemo->time = 0.0;
 
-   //
-   // perform all the game logic
-   //
+   ////
+   //// perform all the game logic
+   ////
 
-   // advance time by half a second.
-   pDemo->time += 0.5;
+   //// advance time by half a second.
+   //pDemo->time += 0.5;
 
-   // move the projectile across the screen
-   for (int i = 0; i < 20; i++)
-   {
-      // this bullet is moving left at 1 pixel per frame
-      double x = pDemo->projectilePath[i].getPixelsX();
-      x -= 1.0;
-      if (x < 0)
-         x = pDemo->ptUpperRight.getPixelsX();
-      pDemo->projectilePath[i].setPixelsX(x);
-   }
+   //// move the projectile across the screen
+   //for (int i = 0; i < 20; i++)
+   //{
+   //   // this bullet is moving left at 1 pixel per frame
+   //   double x = pDemo->projectilePath[i].getPixelsX();
+   //   x -= 1.0;
+   //   if (x < 0)
+   //      x = pDemo->ptUpperRight.getPixelsX();
+   //   pDemo->projectilePath[i].setPixelsX(x);
+   //}
 
-   //
-   // draw everything
-   //
+   ////
+   //// draw everything
+   ////
 
-   ogstream gout(Position(10.0, pDemo->ptUpperRight.getPixelsY() - 20.0));
+   //ogstream gout(Position(10.0, pDemo->ptUpperRight.getPixelsY() - 20.0));
 
-   // draw the ground first
-   pDemo->ground.draw(gout);
+   //// draw the ground first
+   //pDemo->ground.draw(gout);
 
-   // draw the howitzer
-   gout.drawHowitzer(pDemo->ptHowitzer, pDemo->angle, pDemo->time);
+   //// draw the howitzer
+   //gout.drawHowitzer(pDemo->ptHowitzer, pDemo->angle, pDemo->time);
 
-   // draw the projectile
-   for (int i = 0; i < 20; i++)
-      gout.drawProjectile(pDemo->projectilePath[i], 0.5 * (double)i);
+   //// draw the projectile
+   //for (int i = 0; i < 20; i++)
+   //   gout.drawProjectile(pDemo->projectilePath[i], 0.5 * (double)i);
 
-   // draw some text on the screen
-   gout.setf(ios::fixed | ios::showpoint);
-   gout.precision(1);
-   gout << "Time since the bullet was fired: "
-        << pDemo->time << "s\n";
+   //// draw some text on the screen
+   //gout.setf(ios::fixed | ios::showpoint);
+   //gout.precision(1);
+   //gout << "Time since the bullet was fired: "
+   //     << pDemo->time << "s\n";
 }
 
 double Position::metersFromPixels = 40.0;
 
-///********************************************************
-// * DEGREES TO RADIANS
-// * Computes the drag coefficient based off of mach
-// ********************************************************/
-//double degreesToRadians(const double degrees) {
-//    double radians;
-//    radians = (degrees / 360) * (2 * PI);
-//
-//    return radians;
-//}
-
-//double computeAcceleration(double force, double mass) {
-//    return force / mass;
-//}
-//
-//double getAcceleration(double altitude, double v) {
-//    double dragForce = computeDragForce(altitude, v);
-//
-//    return computeAcceleration(dragForce, 46.7);
-//}
-//
-//double computeDyComponent(double v, double angle) {
-//    return v * cos(angle);
-//}
-//
-//double computeDxComponent(double v, double angle) {
-//    return v * sin(angle);
-//}
-//
-//double angleFromComponents(double dx, double dy) {
-//    return atan2(dy, dx);
-//}
-//
-//double getTotalComponent(double dx, double dy) {
-//    return sqrt((dx * dx) + (dy * dy));
-//}
-//
-//double computeVComponent(double v, double a, double t) {
-//    return v + a * t;
-//}
-//
-//double computePosition(double v, double a, double t) {
-//    return (v * t) + (0.5 * a * t * t);
-//}
 /*********************************
  * Initialize the simulation and set it in motion
  *********************************/
@@ -203,24 +120,24 @@ int main(int argc, char** argv)
 #endif // !_WIN32
 {
    // Initialize OpenGL
-   //Position ptUpperRight;
-   //ptUpperRight.setPixelsX(700.0);
-   //ptUpperRight.setPixelsY(500.0);
-   //Position().setZoom(40.0 /* 42 meters equals 1 pixel */);
-   //Interface ui(0, NULL,
-   //   "Demo",   /* name on the window */
-   //   ptUpperRight);
+   Position ptUpperRight;
+   ptUpperRight.setPixelsX(700.0);
+   ptUpperRight.setPixelsY(500.0);
+   Position().setZoom(40.0 /* 42 meters equals 1 pixel */);
+   Interface ui(0, NULL,
+      "Simulator",   /* name on the window */
+      ptUpperRight);
 
-   //// Initialize the demo
-   //Demo demo(ptUpperRight);
+   // Initialize the demo
+   Simulator simulator(ptUpperRight);
 
-   //// set everything into action
-   //ui.run(callBack, &demo);
+   // set everything into action
+   ui.run(callBack, &simulator);
     
-    TestForce testForce = TestForce();
-    testForce.run();
-    TestVelocity testVelocity = TestVelocity();
-    testVelocity.run();
-    TestAcceleration testAccel = TestAcceleration();
-    testAccel.run();
+    //TestForce testForce = TestForce();
+    //testForce.run();
+    //TestVelocity testVelocity = TestVelocity();
+    //testVelocity.run();
+    //TestAcceleration testAccel = TestAcceleration();
+    //testAccel.run();
 }

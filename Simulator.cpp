@@ -9,6 +9,7 @@
  ************************************************************************/
 
 #include "Simulator.h"
+#include "Constants.cpp"
 
 
 /********************************************************
@@ -27,6 +28,7 @@ Simulator::Simulator(const Position& ptUpperRight) :
 	ground.reset(ptHowitzer);		// Set Y
 
 	howitzer = Howitzer(ptHowitzer);
+	projectileActive = false;
 }
 
 
@@ -47,6 +49,8 @@ void Simulator::reset()
 	howitzer.reset(ptHowitzer);
 
 	trajectory.reset();
+
+	projectileActive = false;
 }
 
 
@@ -58,6 +62,7 @@ void Simulator::reload()
 {
 	howitzer.reload();
 	trajectory.reset();
+	projectileActive = false;
 }
 
 
@@ -79,12 +84,19 @@ void Simulator::input(const Interface* pUI)
 	if (pUI->isDown())
 		howitzerAngle += (howitzerAngle >= 0 ? 0.003 : -0.003);
 
-	// fire 
+	if (projectileActive) run();
+
+	// fire
 	if (pUI->isSpace())
 		if (howitzer.canFire()) {
+			
 			howitzer.fireProjectile();
 			hangTime = 0.0;
+
 			projectile = Projectile(ptHowitzer, howitzerAngle);
+			projectile.move();
+			trajectory.addProjectile(projectile);
+			projectileActive = true;
 		}
 }
 
@@ -93,14 +105,21 @@ void Simulator::input(const Interface* pUI)
  * RUN
  * Update each frame with the input from the user.
  ********************************************************/
-void Simulator::run(const Interface* pUI)
+void Simulator::run()
 {
-	if (howitzer.canFire() == true) {
-		input(pUI);
+	if (projectile.isFlying(ground)) {
+		hangTime += TIME_INTERVAL;
+		projectile.move();
+		trajectory.addProjectile(projectile);
 	}
+	else {
+		projectileActive = false;
+		// did the projectile land on the target
+		Position target = ground.getTarget();
+		Position projPos = projectile.getPos();
 
-	else if (!projectile.isFlying()) {
-		if (projectile.isLandedOnTarget()) {
+		if (target.getMetersX() == projPos.getMetersX() &&
+			target.getMetersY() == projPos.getMetersY()) {
 			reset();
 		}
 
@@ -124,4 +143,3 @@ void Simulator::draw()
 	howitzer.draw(gout, howitzerAngle, hangTime);
 	trajectory.draw(gout);
 }
-

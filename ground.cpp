@@ -10,6 +10,7 @@
 #include "ground.h"   // for the Ground class definition
 #include "uiDraw.h"   // for random() and drawLine()
 #include <cassert>
+#include <iostream>
 
 const int WIDTH_HOWITZER = 14;
 

@@ -11,8 +11,6 @@ private:
 	Position position;
 	Velocity v;
 	Acceleration a;
-	bool flying;
-	bool onTarget;
 	double age;
 	double angle;
 public:
@@ -27,14 +25,11 @@ public:
 	double getAge() const {
 		return age;
 	}
-	bool isFlying() const {
-		return flying;
+	bool isFlying(Ground ground) {
+		if (ground.getElevationMeters(position) > 0)
+			return true;
+		else return false;
 	}
-	bool isLandedOnTarget() const {
-		return this->onTarget;
-	}
-	void move();
-	void hitGround(Ground& ground);
-	void hitTarget(Ground& ground);
-};
 
+	void move();
+};

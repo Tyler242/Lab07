@@ -3,7 +3,7 @@ class Velocity
 {
 public:
 	Velocity();
-	Velocity(double dx, double dy);
+	Velocity(double v, double angle);
 	void computeVelocity(const double ddx, const double ddy, double time);
 	double getDX() const {
 		return dx;
@@ -18,6 +18,7 @@ private:
 	double dx;
 	double dy;
 	double v;
+	char direction;
 
 	friend class TestVelocity;
 };

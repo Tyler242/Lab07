@@ -51,9 +51,10 @@ double Force::computeSpeedOfSound(const double altitude) {
 }
 
 double Force::computeDragCoef(const double speed) {
-    assert(speed <= 5 && speed >= 0.3);
+    assert(speed <= 5 && speed >= 0.0);
 
     map<double, double> dragCoefficientMap{
+        {0.0, 0.0},
         {0.300, 0.1629},
         {0.500, 0.1659},
         {0.700, 0.2031},

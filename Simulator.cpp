@@ -119,8 +119,10 @@ void Simulator::run()
 		Position target = ground.getTarget();
 		Position projPos = projectile.getPos();
 
-		if (target.getMetersX() == projPos.getMetersX() &&
-			target.getMetersY() == projPos.getMetersY()) {
+
+		// Projectile hit target
+		if (projPos.getMetersX() >= target.getMetersX() - 150 &&
+			projPos.getMetersX() <= target.getMetersX() + 150) {
 			reset();
 		}
 

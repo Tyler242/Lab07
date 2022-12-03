@@ -9,7 +9,7 @@ Velocity::Velocity() {
 
 Velocity::Velocity(double v, double angle) {
 	this->dx = v * sin(angle);
-	std::cout << dx;
+
 	if (dx > 0.0)
 		direction = '+';
 	else if (dx < 0)

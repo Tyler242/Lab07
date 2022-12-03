@@ -25,10 +25,13 @@ public:
 	double getAge() const {
 		return age;
 	}
-	bool isFlying(Ground ground) {
-		if (ground.getElevationMeters(position) > 0)
+	bool isFlying(const Ground ground) const {
+		if (position.getMetersY() > ground.getElevationMeters(position)) {
 			return true;
-		else return false;
+		}
+		else {
+			return false;
+		}
 	}
 
 	void move();

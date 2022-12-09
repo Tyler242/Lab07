@@ -5,6 +5,7 @@ class Force
 public:
 	Force();
 	void computeForce(const double altitude, const double velocity);
+	double computeGravity(const double altitude);
 	double getForce() const {
 		return force;
 	}

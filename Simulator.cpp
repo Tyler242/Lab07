@@ -121,8 +121,8 @@ void Simulator::run()
 
 
 		// Projectile hit target
-		if (projPos.getMetersX() >= target.getMetersX() - 150 &&
-			projPos.getMetersX() <= target.getMetersX() + 150) {
+		if (projPos.getMetersX() >= target.getMetersX() - 200 &&
+			projPos.getMetersX() <= target.getMetersX() + 200) {
 			reset();
 		}
 
